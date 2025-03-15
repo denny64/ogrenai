@@ -1,4 +1,5 @@
 import { json } from "@sveltejs/kit"
+import { OPENAI_API_KEY } from "$env/static/private"
 
 export async function POST({ request, fetch }) {
   try {
@@ -20,7 +21,7 @@ export async function POST({ request, fetch }) {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer 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`,
+          Authorization: `Bearer ${OPENAI_API_KEY}`,
         },
         body: JSON.stringify({
           model: "gpt-4o",
