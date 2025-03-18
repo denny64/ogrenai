@@ -34,6 +34,7 @@
     editButtonTitle?: string | null
     editLink?: string | null
     saveButtonTitle?: string
+    returnSettingsLink?: string | null
   }
 
   let {
@@ -48,6 +49,7 @@
     editButtonTitle = null,
     editLink = null,
     saveButtonTitle = "Save",
+    returnSettingsLink = "Return to Settings",
   }: Props = $props()
 
   const handleSubmit: SubmitFunction = () => {
@@ -165,7 +167,7 @@
       </div>
       <a href="/account/settings">
         <button class="btn btn-outline btn-sm mt-3 min-w-[145px]">
-          Return to Settings
+          {returnSettingsLink}
         </button>
       </a>
     {/if}

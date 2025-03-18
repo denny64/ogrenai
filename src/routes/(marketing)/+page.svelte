@@ -286,7 +286,7 @@
         class="mt-8 w-full max-w-4xl mx-auto rounded-lg overflow-hidden shadow-lg"
       >
         <img
-          src="/images/productexample.png"
+          src="/images/dash.png"
           alt="Product interface showing flashcard decks"
           class="w-full h-auto"
         />
@@ -353,7 +353,7 @@
       <!-- Left side card (formerly right side) -->
       <div class="bg-white rounded-3xl shadow-lg p-8">
         <img
-          src="/images/quizexample.png"
+          src="/images/quiz.png"
           alt="Quiz interface example"
           class="w-full h-auto rounded-2xl max-w-[400px] mx-auto block"
         />

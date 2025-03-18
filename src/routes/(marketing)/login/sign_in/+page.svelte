@@ -5,6 +5,49 @@
   import { onMount } from "svelte"
   import { page } from "$app/stores"
 
+  import { language } from "$lib/stores/language"
+
+  let currentLang = $state<"en" | "tr">("tr")
+
+  $effect(() => {
+    language.subscribe((value) => {
+      currentLang = value
+    })
+  })
+
+  const translations = {
+    en: {
+      signIn: "Sign In",
+      signUp: "Sign Up",
+      emailLabel: "Email address",
+      emailInputPlaceholder: "Your email address",
+      passwordLabel: "Your Password",
+      passwordInputPlaceholder: "Your password",
+      buttonLabel: "Sign in",
+      emailVerified: "Email verified! Please sign in.",
+      forgotPassword: "Forgot Password?",
+      dontHaveAccount: "Don't have an account?",
+    },
+    tr: {
+      signIn: "Giriş Yap",
+      signUp: "Kayıt Ol",
+      emailLabel: "E-posta adresi",
+      emailInputPlaceholder: "E-posta adresin",
+      passwordLabel: "Şifren",
+      passwordInputPlaceholder: "Şifren",
+      buttonLabel: "Giriş Yap",
+      emailVerified: "E-posta doğrulandı! Lütfen giriş yapın.",
+      forgotPassword: "Şifremi Unuttum?",
+      dontHaveAccount: "Hesabın yok mu?",
+    },
+  }
+
+  let t = $state(translations.tr)
+
+  $effect(() => {
+    t = currentLang === "en" ? translations.en : translations.tr
+  })
+
   let { data } = $props()
   let { supabase } = data
 
@@ -24,7 +67,7 @@
 </script>
 
 <svelte:head>
-  <title>Sign in</title>
+  <title>{t.signIn}</title>
 </svelte:head>
 
 {#if $page.url.searchParams.get("verified") == "true"}
@@ -41,10 +84,10 @@
         d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
       /></svg
     >
-    <span>Email verified! Please sign in.</span>
+    <span>{t.emailVerified}</span>
   </div>
 {/if}
-<h1 class="text-2xl font-bold mb-6">Sign In</h1>
+<h1 class="text-2xl font-bold mb-6">{t.signIn}</h1>
 <Auth
   supabaseClient={data.supabase}
   view="sign_in"
@@ -54,10 +97,21 @@
   showLinks={false}
   appearance={sharedAppearance}
   additionalData={undefined}
+  localization={{
+    variables: {
+      sign_in: {
+        email_label: t.emailLabel,
+        email_input_placeholder: t.emailInputPlaceholder,
+        password_label: t.passwordLabel,
+        password_input_placeholder: t.passwordInputPlaceholder,
+        button_label: t.signIn,
+      },
+    },
+  }}
 />
 <div class="text-l text-slate-800 mt-4">
-  <a class="underline" href="/login/forgot_password">Forgot password?</a>
+  <a class="underline" href="/login/forgot_password">{t.forgotPassword}</a>
 </div>
 <div class="text-l text-slate-800 mt-3">
-  Don't have an account? <a class="underline" href="/login/sign_up">Sign up</a>.
+  {t.dontHaveAccount} <a class="underline" href="/login/sign_up">{t.signUp}</a>.
 </div>
