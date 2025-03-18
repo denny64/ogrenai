@@ -25,6 +25,7 @@
       passwordChangedMessage: "On next sign in, use your new password.",
       newPassword: "New Password",
       confirmNewPassword: "Confirm New Password",
+      returnSettingsLink: "Return to Settings",
     },
     tr: {
       settings: "Ayarlar",
@@ -33,6 +34,7 @@
       passwordChangedMessage: "Bir sonraki girişte yeni şifrenizi kullanın.",
       newPassword: "Yeni Şifre",
       confirmNewPassword: "Yeni Şifreyi Onayla",
+      returnSettingsLink: "Ayarlar'a dön",
     },
   }
 
@@ -55,6 +57,7 @@
   saveButtonTitle={t.resetPassword}
   successTitle={t.passwordChanged}
   successBody={t.passwordChangedMessage}
+  returnSettingsLink={t.returnSettingsLink}
   formTarget="/account/api?/updatePassword"
   fields={[
     {

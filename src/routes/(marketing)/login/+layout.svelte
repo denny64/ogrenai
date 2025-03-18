@@ -1,4 +1,28 @@
 <script lang="ts">
+  import { language } from "$lib/stores/language"
+
+  let currentLang = $state<"en" | "tr">("tr")
+
+  $effect(() => {
+    language.subscribe((value) => {
+      currentLang = value
+    })
+  })
+
+  const translations = {
+    en: {
+      usingCookies: "Logging in uses Cookies",
+    },
+    tr: {
+      usingCookies: "Giriş yapmak için çerezler kullanılır",
+    },
+  }
+
+  let t = $state(translations.tr)
+
+  $effect(() => {
+    t = currentLang === "en" ? translations.en : translations.tr
+  })
   interface Props {
     children?: import("svelte").Snippet
   }
@@ -20,7 +44,7 @@
   <div class="flex flex-col w-64 lg:w-80">
     {@render children?.()}
     <div class="mt-8 {isEurope ? 'block' : 'hidden'}">
-      🍪 Logging in uses Cookies 🍪
+      🍪 {t.usingCookies} 🍪
     </div>
   </div>
 </div>

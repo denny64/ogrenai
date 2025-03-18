@@ -851,7 +851,9 @@
       <!-- TAB CONTENT -->
       <!-- creating cards -->
       {#if creatingCards}
-        <div class="flex flex-col gap-8">
+        <div
+          class="flex flex-col gap-8 {deckState.cards.length > 0 ? 'mb-4' : ''}"
+        >
           <div role="alert" class="alert">
             <Spinner />
             <div>
@@ -862,7 +864,7 @@
         </div>
       {/if}
       {#if deckState.cards.length > 0}
-        <div class="flex items-center gap-4 mb-8">
+        <div class="flex items-center gap-4 mb-4">
           <h2 class="text-2xl font-bold">
             {t.cards} ({deckState.cards.length})
           </h2>

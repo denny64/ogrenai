@@ -33,6 +33,8 @@ export async function POST({ request, fetch }) {
 
     const openaiData = await openaiResponse.json()
 
+    console.log("openaiData RAW ====", openaiData)
+
     console.log("openaiData", openaiData.choices[0].message)
     const parsedResponse = JSON.parse(openaiData.choices[0].message.content)
 
