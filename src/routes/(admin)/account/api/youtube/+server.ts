@@ -66,7 +66,7 @@ export async function POST({
 
     const videoId = extractYoutubeId(data.youtubeLink)
     const proxyUrl =
-      "http://sprlej49j4:=syyX68xon7M1XMlxt@gate.smartproxy.com:10001"
+      "http://sprlej49j4:=syyX68xon7M1XMlxt@tr.smartproxy.com:40004"
 
     async function getTranscript(videoId) {
       try {
