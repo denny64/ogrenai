@@ -18,13 +18,13 @@
 
   // Language and translations
   let currentLang = $state<"en" | "tr">("tr")
-  let flashcardLang = $state<"en" | "tr">(currentLang)
+  let flashcardLang = $state<"tr" | "en">("tr")
 
   // Initialize from the store
   $effect(() => {
     language.subscribe((value) => {
       currentLang = value
-      flashcardLang = value // Update flashcardLang to match currentLang
+      // flashcardLang = value // Update flashcardLang to match currentLang
     })
   })
 
@@ -1050,8 +1050,8 @@
           class="select select-bordered w-full max-w-xs"
           bind:value={flashcardLang}
         >
-          <option value="en">English</option>
           <option value="tr">Türkçe</option>
+          <option value="en">English</option>
         </select>
       </div>
       <p class="text-xl text-base-content/70 mb-2">
@@ -1124,8 +1124,8 @@
           class="select select-bordered w-full max-w-xs"
           bind:value={flashcardLang}
         >
-          <option value="en">English</option>
           <option value="tr">Türkçe</option>
+          <option value="en">English</option>
         </select>
       </div>
       <p class="text-xl text-base-content/70 mb-2">
