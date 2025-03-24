@@ -24,7 +24,7 @@ export async function POST({ request, fetch }) {
           Authorization: `Bearer ${PRIVATE_OPENAI_API_KEY}`,
         },
         body: JSON.stringify({
-          model: "gpt-4o mini",
+          model: "gpt-4o-mini",
           messages,
           response_format: { type: "json_object" },
         }),
