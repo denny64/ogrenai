@@ -851,14 +851,18 @@
       <!-- TAB CONTENT -->
       <!-- creating cards -->
       {#if creatingCards}
-        <div
-          class="flex flex-col gap-8 {deckState.cards.length > 0 ? 'mb-4' : ''}"
-        >
-          <div role="alert" class="alert">
-            <Spinner />
-            <div>
-              <h3 class="font-bold">{t.generatingCards}</h3>
-              <div class="text-xs">{t.thisMayTake}</div>
+        <!-- Full screen overlay -->
+        <div class="fixed inset-0 bg-black/50 z-40"></div>
+
+        <!-- Centered popup -->
+        <div class="fixed inset-0 flex items-center justify-center z-50">
+          <div
+            class="bg-base-100 p-8 rounded-xl shadow-xl max-w-md w-full mx-4"
+          >
+            <div class="flex flex-col items-center text-center gap-4">
+              <Spinner />
+              <h3 class="text-2xl font-bold">{t.generatingCards}</h3>
+              <p class="text-base-content/70">{t.thisMayTake}</p>
             </div>
           </div>
         </div>
