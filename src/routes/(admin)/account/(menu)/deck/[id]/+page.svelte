@@ -278,7 +278,7 @@
         }
 
         console.log(
-          "RESPONSE FROM OPENAI === BEFORE CREATING CARDS",
+          "RESPONSE FROM OPENAI === BEFORE CREATING CARDS PDF DATAs",
           response.data.flashcards,
         )
 
@@ -448,7 +448,99 @@
             messages: [
               {
                 role: "user",
-                content: `Return in JSON format with keys 'question' and 'answer'. There should be 4 multiple choice answers with 1 being correct, please label the correct answer as a boolean 'true' and the incorrect answers as boolean 'false'. The keys for the multiple choice answers should be 'option' and 'correct'. Create ${questionsToGenerate} flashcards in ${flashcardLang === "tr" ? "Turkish" : "English"} from the following text, making sure they are different from these existing questions: ${JSON.stringify(existingQuestions)}. Text to generate from: ${response.data.transcript}`,
+                // content: `Return in JSON format with keys 'question' and 'answer'. There should be 4 multiple choice answers with 1 being correct, please label the correct answer as a boolean 'true' and the incorrect answers as boolean 'false'. The keys for the multiple choice answers should be 'option' and 'correct'. Create ${questionsToGenerate} flashcards in ${flashcardLang === "tr" ? "Turkish" : "English"} from the following text, making sure they are different from these existing questions: ${JSON.stringify(existingQuestions)}. Text to generate from: ${response.data.transcript}`,
+                // content: `
+                // You are an expert flashcard creator. Your task is to extract every single informative point from the following text provided — no matter how minor, detailed, or seemingly irrelevant—and turn each point into an individual Q&A flashcard.
+
+                // A “point” can include:
+                // • Definitions
+                // • Factual statements
+                // • Concepts and explanations
+                // • Lists, bullet points, or steps
+                // • Examples or analogies
+                // • Names, dates, places, terminology
+
+                // 🔁 If a sentence contains multiple facts, break them into multiple simple flashcards.
+
+                // ❌ Do not skip or summarize anything.
+                // ❌ Do not group information into paragraphs or answer blocks.
+
+                // ✅ Format each flashcard like this in Markdown (one per point):
+
+                // makefileCopyEditQ: [Clear and concise question]
+                // A: [Precise and factual answer]
+                // 🔎 Example (complex sentence broken down):
+                // Input: "Isaac Newton formulated the laws of motion and universal gravitation in the 17th century."
+                // Output:
+
+                // makefileCopyEditQ: Who formulated the laws of motion?
+                // A: Isaac Newton
+
+                // Q: Who formulated the law of universal gravitation?
+                // A: Isaac Newton
+
+                // Q: In which century did Isaac Newton formulate his laws?
+                // A: The 17th century
+                // For long texts, generate as many flashcards as possible within the current output limit. If more content remains, say: "Continue in next response."
+
+                // Now process the following text:
+                // "${response.data.transcript}"
+                // `,
+                content: `
+                You are an expert flashcard creator. Your task is to extract every single informative point from the following text provided — no matter how minor, detailed, or seemingly irrelevant—and turn each point into an individual multiple-choice Q&A flashcard from the provided text. 
+                
+                A “point” can include:
+                • Definitions
+                • Factual statements
+                • Concepts and explanations
+                • Lists, bullet points, or steps
+                • Examples or analogies
+                • Names, dates, places, terminology
+
+                🔁 If a sentence contains multiple facts, break them into multiple simple flashcards.
+
+                ❌ Do not repeat the same question.
+                ❌ Do not skip or summarize anything.
+                ❌ Do not group information into paragraphs or answer blocks.
+
+                ✅ Return the response in JSON format as shown in the example below:
+
+                makefileCopyEditQ: [Clear and concise question]  
+                A: [Precise and factual answer]  
+
+                🔎 Example (complex sentence broken down):
+                Input: "Isaac Newton formulated the laws of motion and universal gravitation in the 17th century."
+                Output:
+
+                Example JSON format:
+                {
+                  "flashcards": [
+                    {
+                      "question": "In which century did Isaac Newton formulate his laws?",
+                      "answer": [
+                        {
+                          "option": "The 17th century",
+                          "correct": true
+                        },
+                        {
+                          "option": "The 3rd century",
+                          "correct": false
+                        },
+                        {
+                          "option": "The 21st century",
+                          "correct": false
+                        },
+                        {
+                          "option": "The 16th century",
+                          "correct": false
+                        }
+                      ]
+                    }
+                  ]
+                }
+
+                Now process the following text: "${response.data.transcript}". To summarise, return in JSON format with keys 'question' and 'answer'. There should be 4 multiple choice answers with 1 being correct, please label the correct answer as a boolean 'true' and the incorrect answers as boolean 'false'. The keys for the multiple choice answers should be 'option' and 'correct'. Create ${questionsToGenerate} flashcards in ${flashcardLang === "tr" ? "Turkish" : "English"} from the following text, making sure they are different from these existing questions: ${JSON.stringify(existingQuestions)}.
+                `,
               },
             ],
             response_format: { type: "json_object" },
@@ -460,7 +552,7 @@
         }
 
         console.log(
-          "AI RESPONSE FLASHCARDS TO CREATE CARDS===",
+          "AI RESPONSE FLASHCARDS TO CREATE CARDS=== YOUTUBE @@@",
           aiResponse.data.flashcards,
         )
 

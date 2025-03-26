@@ -38,9 +38,42 @@ export async function POST({ request, fetch }) {
     console.log("openaiData", openaiData.choices[0].message)
     const parsedResponse = JSON.parse(openaiData.choices[0].message.content)
 
+    // console.log("parsedResponse ######", parsedResponse)
+
+    const checkCorrectStructure = (arr) => {
+      if (!Array.isArray(arr)) return { flashcards: [] }
+
+      const validFlashcards = arr.filter((item) => {
+        // Check if item has question property
+        if (!item.question || typeof item.question !== "string") return false
+
+        // Check if answer property exists and is an array
+        if (!item.answer || !Array.isArray(item.answer)) return false
+
+        // Check if there are exactly 4 answers
+        if (item.answer.length !== 4) return false
+
+        // Check if each answer has the correct structure
+        return item.answer.every(
+          (answer) =>
+            typeof answer === "object" &&
+            "option" in answer &&
+            "correct" in answer &&
+            typeof answer.option === "string" &&
+            typeof answer.correct === "boolean",
+        )
+      })
+
+      return { flashcards: validFlashcards }
+    }
+
+    let correctParsedResponse = checkCorrectStructure(parsedResponse.flashcards)
+
+    console.log("correctParsedResponse ######", correctParsedResponse)
+
     return json({
       success: true,
-      data: parsedResponse,
+      data: correctParsedResponse,
     })
   } catch (error) {
     console.error("OpenAI API error:", error)
