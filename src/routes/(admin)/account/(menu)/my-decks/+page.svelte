@@ -234,7 +234,6 @@
       <button class="btn btn-outline" onclick={() => add_deck_modal.showModal()}
         >{t.addDeck}</button
       >
-      <button class="btn btn-primary">{t.learn}</button>
     </div>
   </div>
 
