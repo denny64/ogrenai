@@ -149,7 +149,7 @@
 
 <button
   class="back-button desktop-back"
-  onclick={() => goto(`/account/deck/${singleDeckData.id}`)}
+  onclick={() => goto(`/hesap/kart-destesi/${singleDeckData.id}`)}
 >
   <svg
     xmlns="http://www.w3.org/2000/svg"
@@ -171,7 +171,7 @@
   <div class="quiz-header flex items-center justify-between w-full">
     <button
       class="back-button mobile-back"
-      onclick={() => goto(`/account/deck/${singleDeckData.id}`)}
+      onclick={() => goto(`/hesap/kart-destesi/${singleDeckData.id}`)}
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -311,7 +311,7 @@
       </div>
 
       <div class="completion-buttons">
-        <button class="button" onclick={() => goto("/account/my-decks")}
+        <button class="button" onclick={() => goto("/hesap/kartlarim")}
           >Return to My Decks</button
         >
         <button

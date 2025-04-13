@@ -1,10 +1,11 @@
 <script lang="ts">
-  import PricingModule from "./pricing_module.svelte"
-  import { WebsiteName } from "./../../../config"
+  import { WebsiteName } from "../../../../../config"
   import { goto } from "$app/navigation"
   import { onMount } from "svelte"
   import type { SupabaseClient } from "@supabase/supabase-js"
-  import type { Database } from "../../../DatabaseDefinitions"
+  import type { Database } from "../../../../../DatabaseDefinitions"
+  import { getContext } from "svelte"
+  import type { Writable } from "svelte/store"
   import { language } from "$lib/stores/language"
 
   let currentLang = $state<"en" | "tr">("tr")
@@ -50,12 +51,18 @@
     t = currentLang === "en" ? translations.en : translations.tr
   })
 
+  let adminSection: Writable<string> = getContext("adminSection")
+  adminSection.set("billing")
+
   interface PageData {
     supabase: SupabaseClient<Database>
   }
 
   let { data } = $props<{ data: PageData }>()
-  let { supabase, user, session } = data
+  let { supabase, user, session, profile } = data
+
+  console.log("BILLING PAGE DATA", data)
+  console.log("BILLING PAGE PROFILE", profile)
 
   let isYearly = $state(true)
   const monthlyPrice = 8.99
@@ -64,18 +71,56 @@
   let billingText = $derived(
     isYearly ? `${t.billedYearly}` : `${t.billedMonthly}`,
   )
+
   const handleGetFree = async () => {
-    if (!session) {
-      goto("/giris/kayit-ol")
-    } else {
-      // goto("/hesap")
-      console.log("User is signed in, handle free subscription")
-    }
+    // if (!session) {
+    //   goto("/giris/kayit-ol")
+    // } else {
+    //   // goto("/hesap")
+    //   console.log("User is signed in, handle free subscription")
+    // }
+    console.log("User is signed in, handle free subscription")
   }
 
   const handleGetPremium = async (subType: string) => {
-    if (!session) {
-      goto("/giris/kayit-ol")
+    if (profile.stripe_customer_id) {
+      // EXISTING CUSTOMER STRIPE
+      console.log("existing customer, handle premium subscription")
+      const response = await fetch("/hesap/api/stripe", {
+        method: "POST",
+        body: JSON.stringify({
+          type: "existingCustomer",
+          data: {
+            userId: profile.id,
+            stripeCustomerId: profile.stripe_customer_id,
+            subType: subType,
+            amount: isYearly ? yearlyPrice * 12 : monthlyPrice,
+          },
+        }),
+      }).then((res) => res.json())
+      console.log("STRIPE BILLING PORTAL DATA? ==", response)
+      if (response.success) {
+        window.open(response.stripeUrl, "_blank")
+      }
+    } else {
+      // NEW CUSTOMER STRIPE
+      console.log("new customer, handle premium subscription")
+      const response = await fetch("/hesap/api/stripe", {
+        method: "POST",
+        body: JSON.stringify({
+          type: "newCustomer",
+          data: {
+            userId: session?.user.id,
+            stripeCustomerId: profile.stripe_customer_id,
+            subType: subType,
+            amount: isYearly ? yearlyPrice * 12 : monthlyPrice,
+          },
+        }),
+      }).then((res) => res.json())
+      console.log("STRIPE NEW CUSTOMER RESPONSE ==", response)
+      if (response.success === true) {
+        window.open(response.stripeUrl, "_blank")
+      }
     }
   }
 
@@ -151,35 +196,6 @@
   </div>
 
   <div class="w-full my-8">
-    <!-- <PricingModule callToAction="Get Started" highlightedPlanId="pro" />
-
-    <svg style="display:none" version="2.0">
-      <defs>
-        <symbol
-          id="checkcircle"
-          viewBox="0 0 24 24"
-          stroke-width="2"
-          fill="currentColor"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-        >
-          <path
-            d="M16.417 10.283A7.917 7.917 0 1 1 8.5 2.366a7.916 7.916 0 0 1 7.917 7.917zm-4.105-4.498a.791.791 0 0 0-1.082.29l-3.828 6.63-1.733-2.08a.791.791 0 1 0-1.216 1.014l2.459 2.952a.792.792 0 0 0 .608.285.83.83 0 0 0 .068-.003.791.791 0 0 0 .618-.393L12.6 6.866a.791.791 0 0 0-.29-1.081z"
-          />
-        </symbol>
-      </defs>
-    </svg>
-
-    <svg style="display:none" version="2.0">
-      <defs>
-        <symbol id="nocircle" viewBox="0 0 24 24" fill="currentColor">
-          <path
-            d="M12,2A10,10,0,1,0,22,12,10,10,0,0,0,12,2Zm4,11H8a1,1,0,0,1,0-2h8a1,1,0,0,1,0,2Z"
-          />
-        </symbol>
-      </defs>
-    </svg> -->
-
     <div
       class="flex flex-col md:flex-row gap-8 max-w-5xl mx-auto justify-center items-center mt-8"
     >
@@ -426,117 +442,5 @@
         </div>
       </div>
     </div>
-
-    <!-- <h1 class="text-2xl font-bold text-center mt-16">Plan Features</h1>
-    <h2 class="text-xl text-center text-slate-500 mt-1 pb-3">
-      Example feature table
-    </h2>
-
-    <div class="overflow-visible mx-auto max-w-xl mt-4">
-      <table class="table">
-        <thead
-          class="text-lg sticky top-0 bg-base-100 bg-opacity-50 z-10 backdrop-blur-sm"
-        >
-          <tr>
-            <th></th>
-            <th class="text-center">Free</th>
-            <th class="text-center">Pro</th>
-          </tr>
-        </thead>
-        <tbody>
-          {#each planFeatures as feature}
-            {#if feature.header}
-              <tr class="bg-base-200 font-bold">
-                <td colspan="3">{feature.name} </td>
-              </tr>
-            {:else}
-              <tr class="relative">
-                <td>{feature.name} </td>
-                <td class="text-center">
-                  {#if feature.freeString}
-                    {feature.freeString}
-                  {:else if feature.freeIncluded}
-                    <div class="flex justify-center items-center">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke-width="1.5"
-                        stroke="currentColor"
-                        class="w-8 h-8 text-success"
-                      >
-                        <path
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                          d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
-                        />
-                      </svg>
-                    </div>
-                  {:else}
-                    <div class="flex justify-center items-center">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke-width="1.5"
-                        stroke="currentColor"
-                        class="w-8 h-8 text-red-500"
-                      >
-                        <path
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                          d="m9.75 9.75 4.5 4.5m0-4.5-4.5 4.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
-                        />
-                      </svg>
-                    </div>
-                  {/if}
-                </td>
-                <td class="text-center">
-                  {#if feature.proString}
-                    {feature.proString}
-                  {:else if feature.proIncluded}
-                    <div class="flex justify-center items-center">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke-width="1.5"
-                        stroke="currentColor"
-                        class="w-8 h-8 text-success"
-                      >
-                        <path
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                          d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
-                        />
-                      </svg>
-                    </div>
-                  {:else}
-                    <div class="flex justify-center items-center">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke-width="1.5"
-                        stroke="currentColor"
-                        class="w-8 h-8 text-red-500"
-                      >
-                        <path
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                          d="m9.75 9.75 4.5 4.5m0-4.5-4.5 4.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
-                        />
-                      </svg>
-                    </div>
-                  {/if}
-                </td>
-              </tr>
-            {/if}
-          {/each}
-        </tbody>
-      </table>
-    </div> -->
   </div>
 </div>
-
-<!-- <h1>pricing plans coming soon</h1> -->

@@ -12,23 +12,26 @@ export const load: PageServerLoad = async ({
 }) => {
   const sbDeckId = params.id
 
-  // console.log("QUIZ DECK ID !!!!!@@@", sbDeckId)
   let singleDeckData = await fetch(`/hesap/api/deck/${sbDeckId}`).then((res) =>
     res.json(),
   )
-  let cardList: any[] = []
-  let cardListResponse = await fetch(`/hesap/api/card?deckId=${sbDeckId}`).then(
-    (res) => res.json(),
-  )
-  console.log("CARD LIST SERVER", cardListResponse)
-  if (cardListResponse.success) {
-    cardList = [...cardListResponse.data]
-    cardList = cardListResponse.data.filter((card) => card.answer)
-  }
+
+  // let cardList: any[] = []
+
+  // let cardListResponse = await fetch(
+  //   `/hesap/api/card?deckId=${sbDeckId}`,
+  // ).then((res) => res.json())
+
+  // console.log("CARD LIST SERVER", cardListResponse)
+  // if (cardListResponse.success) {
+  //   cardList = [...cardListResponse.data]
+  // }
+
   // const youtubeLinkForm = await superValidate(zod(youtubeLinkSchema))
+
   return {
     singleDeckData: singleDeckData.data[0],
-    cardList: [...cardList],
+    // cardList: [...cardList],
     // youtubeLinkForm,
   }
 }

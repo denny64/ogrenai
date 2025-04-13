@@ -277,7 +277,7 @@
           <button class="btn btn-primary btn-sm px-6">★ us on Github</button>
         </a> -->
         <!-- START LEARNING BUTTON IN TURKISH -->
-        <a href="/account/my-decks">
+        <a href="/hesap/kartlarim">
           <button class="btn btn-soft btn-info btn-lg px-6 mt-3 mx-2"
             >{t.startLearning}</button
           >
@@ -312,7 +312,7 @@
         <p class="text-gray-600 text-lg mb-8">
           {t.aiDescription}
         </p>
-        <a href="/account/my-decks">
+        <a href="/hesap/kartlarim">
           <button class="btn btn-outline btn-primary btn-lg rounded-full px-8">
             {t.aiButtonText}
           </button>
@@ -369,7 +369,7 @@
         <p class="text-gray-600 text-lg mb-8">
           {t.spacedDescription}
         </p>
-        <a href="/account/my-decks">
+        <a href="/hesap/kartlarim">
           <button class="btn btn-outline btn-primary btn-lg rounded-full px-8">
             {t.spacedButtonText}
           </button>

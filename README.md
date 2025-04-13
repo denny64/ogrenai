@@ -228,13 +228,13 @@ If you find build, formatting or linting rules too tedious, you can disable enfo
   - Test that the "sign up" and "forgot password" emails link back to your domain correctly by checking the have a redirect_to parameter to your `yourdomain.com/auth/callback`. If they link to the base URL or another page, double check you have the config above set correctly.
 - OAuth Logins
   - Decide which oauth logins you want to support, and set them up in the Supabase Auth console under “Auth Providers”. Be sure to provide them the Supabase callback URL. Also be sure to set any platform specific permissions/settings to retrieve their email as part of the login (for example, for Github it's under `Account Permissions > Email Address > Read Only Access`
-  - Edit `oauthProviders` list in `/src/routes/(marketing)/login/login_config.ts` with the list of providers you chose. If you don’t want any OAuth options, make this an empty array.
+  - Edit `oauthProviders` list in `/src/routes/(marketing)/giris/giris_config.ts` with the list of providers you chose. If you don’t want any OAuth options, make this an empty array.
   - Test each provider to ensure you setup the client ID, client secret and callback correctly for each
 - Auth Email SMTP
   - Supabase has a limit of 4 emails per hour on their development server. You should [Configure a Custom SMTP](https://supabase.com/docs/guides/auth/auth-smtp) sending emails from your own domain.
   - Customize the email templates in the Supabase Auth console to include your product name and branding
 - Test authentication
-  - Open the `/login` page in your browser, and ensure you can sign up, confirm email, log in, and edit your account.
+  - Open the `/giris` page in your browser, and ensure you can sign up, confirm email, log in, and edit your account.
 
 ## Setup Stripe
 
@@ -315,11 +315,11 @@ After the steps above, you’ll have a working version like the demo page. Howev
   - Update the marketing page layout `src/routes/(marketing)/+layout.svelte`: customize design, delete unwanted pages from header and footer
   - Style: make it your own look and feel.
   - Update the favicon in the `/static/` directory
-  - The Authentication UI should automatically update based on your DaisyUI style, but check out the login in pages, and further design tweaks can be made in `src/routes/(marketing)/login/login_config.ts` (see [Auth UI](https://supabase.com/docs/guides/auth/auth-helpers/auth-ui#customization) for options).
+  - The Authentication UI should automatically update based on your DaisyUI style, but check out the login in pages, and further design tweaks can be made in `src/routes/(marketing)/giris/giris_config.ts` (see [Auth UI](https://supabase.com/docs/guides/auth/auth-helpers/auth-ui#customization) for options).
 - Site Search: any [prerendered](https://kit.svelte.dev/docs/page-options#prerender) content will automatically be indexed by the site search. To exclude a page, add it to `excludePaths` in `src/lib/build_index.ts`.
 - Functionality
   - Add actual SaaS functionality!
-  - Replace the admin dashboard with real content (`/src/routes/(admin)/account/+page.svelte`).
+  - Replace the admin dashboard with real content (`/src/routes/(admin)/hesap/+page.svelte`).
   - Add API endpoints and database tables as needed to deliver your SaaS product.
 - Analytics: optionally add analytics to your project. [guide](/analytics_docs.md)
 

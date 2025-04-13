@@ -83,7 +83,7 @@
       </li> -->
       <!-- <li class="md:mx-2"><a href="/blog">Blog</a></li> -->
       <li class="md:mx-2"><a href="/pricing">Pricing</a></li>
-      <li class="md:mx-2"><a href="/account/my-decks">{t.account}</a></li>
+      <li class="md:mx-2"><a href="/hesap/kartlarim">{t.account}</a></li>
       <!-- <li class="md:mx-0">
         <a href="/search" aria-label="Search">
           <svg
@@ -125,7 +125,7 @@
       >
         <!-- <li><a href="/blog">Blog</a></li> -->
         <!-- <li><a href="/pricing">Pricing</a></li> -->
-        <li><a href="/account/my-decks">{t.account}</a></li>
+        <li><a href="/hesap/kartlarim">{t.account}</a></li>
         <!-- <li><a href="/search">Search</a></li> -->
         <!-- <li>
           <a

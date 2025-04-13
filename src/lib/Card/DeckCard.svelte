@@ -33,7 +33,7 @@
 
   const clickCard = () => {
     console.log("clicked card")
-    goto(`/account/deck/${deck.id}`)
+    goto(`/hesap/kart-destesi/${deck.id}`)
   }
 
   const handleOptionsClick = (event: MouseEvent) => {

@@ -98,7 +98,7 @@
 
     console.log("new card answer object", newCardAnswerObject)
 
-    const response = await fetch("/account/api/card", {
+    const response = await fetch("/hesap/api/card", {
       method: "POST",
       body: JSON.stringify({
         type: "editCard",
@@ -133,7 +133,7 @@
   // Add this new handler
   const handleDeleteCard = async () => {
     deletingCard = true
-    const response = await fetch("/account/api/card", {
+    const response = await fetch("/hesap/api/card", {
       method: "POST",
       body: JSON.stringify({
         type: "deleteCard",

@@ -53,7 +53,7 @@
               </div>
             {:else}
               <a
-                href={"/account/subscribe/" +
+                href={"/hesap/subscribe/" +
                   (plan?.stripe_price_id ?? "free_plan")}
                 class="btn btn-primary w-[80%] mx-auto"
               >
