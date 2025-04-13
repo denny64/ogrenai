@@ -461,8 +461,8 @@
       let newCards = [] // Temporary array to hold all new cards
 
       // Generate cards in batches of 5
-      // for (let batchNumber = 1; batchNumber < totalBatches; batchNumber++) {
-      for (let batchNumber = 1; batchNumber < 2; batchNumber++) {
+      for (let batchNumber = 1; batchNumber < totalBatches; batchNumber++) {
+        // for (let batchNumber = 1; batchNumber < 2; batchNumber++) {
         console.log(`Generating batch ${batchNumber} of ${totalBatches}...`)
 
         // Create a list of existing questions to avoid duplicates
