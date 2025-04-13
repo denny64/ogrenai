@@ -8,6 +8,8 @@
   import QACard from "$lib/Card/QACard.svelte"
   import RenameDeckModal from "$lib/Modal/RenameDeckModal.svelte"
   import { language } from "$lib/stores/language"
+  import { credits } from "$lib/stores/credits"
+
   // import { deckState } from "$lib/store/deck.svelte"
 
   let adminSection: Writable<string> = getContext("adminSection")
@@ -15,6 +17,8 @@
 
   let { data } = $props()
   let { singleDeckData } = data
+
+  console.log("subscriptionStats", data.subscriptionStats)
 
   // Language and translations
   let currentLang = $state<"en" | "tr">("tr")
@@ -352,6 +356,24 @@
       isGenerating = false
       creatingCards = false
       finishedCreatingCards = true
+
+      // Completed deck, fill table and reduce credits
+
+      const response = await fetch("/account/api/deck", {
+        method: "POST",
+        body: JSON.stringify({
+          type: "completeDeck",
+          data: {
+            profileCredits: data.profile.credits,
+            profile: data.profile,
+            subscriptionStats: data.subscriptionStats,
+          },
+        }),
+      }).then((res) => res.json())
+      console.log("COMPLETED DECK?", response)
+      credits.set(
+        data.subscriptionStats.creditsAvailable - response.creditsToDeduct,
+      )
     }
   }
 
@@ -439,7 +461,8 @@
       let newCards = [] // Temporary array to hold all new cards
 
       // Generate cards in batches of 5
-      for (let batchNumber = 1; batchNumber < totalBatches; batchNumber++) {
+      // for (let batchNumber = 1; batchNumber < totalBatches; batchNumber++) {
+      for (let batchNumber = 1; batchNumber < 2; batchNumber++) {
         console.log(`Generating batch ${batchNumber} of ${totalBatches}...`)
 
         // Create a list of existing questions to avoid duplicates
@@ -533,6 +556,23 @@
     } finally {
       creatingCards = false
       finishedCreatingCards = true
+
+      // Completed deck, fill table and reduce credits
+      const response = await fetch("/account/api/deck", {
+        method: "POST",
+        body: JSON.stringify({
+          type: "completeDeck",
+          data: {
+            profileCredits: data.profile.credits,
+            profile: data.profile,
+            subscriptionStats: data.subscriptionStats,
+          },
+        }),
+      }).then((res) => res.json())
+      console.log("COMPLETED DECK?", response)
+      credits.set(
+        data.subscriptionStats.creditsAvailable - response.creditsToDeduct,
+      )
     }
   }
 
@@ -1055,23 +1095,35 @@
 
     {#if !importType}
       <h3 class="font-bold text-2xl mb-2">{t.magicImport}</h3>
-      <p class="text-xl text-base-content/70 mb-8">
-        {t.selectImportSource}
-      </p>
+      {#if $credits === 0}
+        <p class="text-xl text-red-500 mb-8">You have no more credits</p>
+      {:else}
+        <p class="text-xl text-base-content/70 mb-8">
+          {t.selectImportSource}
+        </p>
+      {/if}
 
       <div class="grid grid-cols-3 gap-4">
         <!-- Row 1 -->
         <button
-          class="card bg-base-100 hover:bg-base-200 transition-colors p-6 flex items-center gap-4"
+          class="card bg-base-100 hover:bg-base-200 transition-colors p-6 flex items-center gap-4 {$credits ===
+          0
+            ? 'opacity-50 cursor-not-allowed'
+            : ''}"
           onclick={() => showImportView("pdf")}
+          disabled={$credits === 0}
         >
           <img src="/images/pdfimg.png" alt="PDF icon" class="w-12 h-12" />
           <span class="text-xl">PDF</span>
         </button>
 
         <button
-          class="card bg-base-100 hover:bg-base-200 transition-colors p-6 flex items-center gap-4"
+          class="card bg-base-100 hover:bg-base-200 transition-colors p-6 flex items-center gap-4 {$credits ===
+          0
+            ? 'opacity-50 cursor-not-allowed'
+            : ''}"
           onclick={() => showImportView("youtube")}
+          disabled={$credits === 0}
         >
           <img
             src="/images/youtubeimg.png"
@@ -1231,7 +1283,11 @@
     </form>
 
     <h3 class="font-bold text-4xl mb-12 text-center">
-      Learn {singleDeckData.title}
+      {#if currentLang === "en"}
+        {t.learn} {singleDeckData.title}
+      {:else}
+        {singleDeckData.title} {t.learn}
+      {/if}
     </h3>
 
     <div class="flex flex-col md:grid md:grid-cols-3 gap-4 md:gap-8">
@@ -1240,8 +1296,8 @@
         disabled
       >
         <img
-          src="/images/owlimg.png"
-          alt="Owl"
+          src="/images/parrot.png"
+          alt="Parrot"
           class="w-12 h-12 md:w-24 md:h-24"
         />
         <div class="text-left md:text-center flex-1">
@@ -1259,8 +1315,8 @@
         onclick={() => selectLearnMode("memorize")}
       >
         <img
-          src="/images/elephantimg.png"
-          alt="Elephant"
+          src="/images/book.png"
+          alt="Book"
           class="w-12 h-12 md:w-24 md:h-24"
         />
         <div class="text-left md:text-center flex-1">

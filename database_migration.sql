@@ -71,3 +71,19 @@ create policy "Avatar images are publicly accessible." on storage.objects
 
 create policy "Anyone can upload an avatar." on storage.objects
   for insert with check (bucket_id = 'avatars');
+
+
+-- Add stripe_customer_id column to profiles table
+ALTER TABLE profiles 
+ADD COLUMN stripe_customer_id text UNIQUE;
+
+-- Add foreign key constraint to stripe.customers table
+ALTER TABLE profiles
+ADD CONSTRAINT fk_stripe_customer
+FOREIGN KEY (stripe_customer_id) 
+REFERENCES stripe.customers(id);
+
+-- Add credits column to profiles table
+ALTER TABLE profiles
+ADD COLUMN credits integer NOT NULL DEFAULT 0;
+

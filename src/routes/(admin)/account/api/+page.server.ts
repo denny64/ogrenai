@@ -287,6 +287,7 @@ export const actions = {
         // website: website,
         updated_at: new Date(),
         unsubscribed: priorProfile?.unsubscribed ?? false,
+        credits: 3,
       })
       .select()
 

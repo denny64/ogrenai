@@ -82,7 +82,7 @@
         >
       </li> -->
       <!-- <li class="md:mx-2"><a href="/blog">Blog</a></li> -->
-      <!-- <li class="md:mx-2"><a href="/#">Pricing</a></li> -->
+      <li class="md:mx-2"><a href="/pricing">Pricing</a></li>
       <li class="md:mx-2"><a href="/account/my-decks">{t.account}</a></li>
       <!-- <li class="md:mx-0">
         <a href="/search" aria-label="Search">

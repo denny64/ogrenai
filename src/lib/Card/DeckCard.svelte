@@ -40,7 +40,7 @@
     event.stopPropagation()
   }
 
-  console.log("DECK CARD", deck)
+  // console.log("DECK CARD", deck)
 </script>
 
 <div class="card bg-white shadow-xl cursor-pointer" onclick={clickCard}>

@@ -8,7 +8,9 @@
   adminSection.set("settings")
 
   let { data } = $props()
-  let { profile, user } = data
+  let { profile, user, subscriptionStats } = data
+
+  console.log("sub stats", subscriptionStats)
 
   // Language and translations
   let currentLang = $state<"en" | "tr">("tr")
@@ -113,6 +115,30 @@
   editLink="/account/settings/change_email_subscription"
 /> -->
 
+<!-- MANAGE SUBSCRIPTION -->
+<div class="card p-6 pb-7 mt-8 max-w-xl flex flex-col md:flex-row shadow">
+  <div class="text-xl font-bold mb-3 w-48 md:pr-8 flex-none">Subscription</div>
+
+  <div class="w-full min-w-48">
+    <div>
+      <label for="fullName"
+        ><span class="text-sm text-gray-500">Current Plan</span></label
+      >
+      <div class="text-lg mb-3">
+        <span class="badge badge-lg badge-primary"
+          >{subscriptionStats.plan}</span
+        >
+      </div>
+    </div>
+    <!-- <a href="/account/settings">
+      <button class="btn btn-outline btn-sm mt-3 min-w-[145px]">
+        Manage
+      </button>
+    </a> -->
+  </div>
+</div>
+
+<!-- DELETE ACCOUNT -->
 <SettingsModule
   title={t.dangerZone}
   editable={false}

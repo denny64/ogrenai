@@ -32,7 +32,7 @@
 
   console.log("user", user)
   console.log("profile", profile)
-  console.log("deckList", deckList)
+  // console.log("deckList", deckList)
 
   const handleAddDeck = async () => {
     creatingDeck = true

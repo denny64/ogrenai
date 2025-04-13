@@ -159,8 +159,6 @@ create policy "Users can update cards in their deck." on card
     auth.uid() = (select profile_id from deck where id = card.deck_id)
   );
 
-// ... existing code ...
-
 -- Drop existing tables and their policies (order matters due to dependencies)
 drop policy if exists "Cards are viewable by deck owner." on card;
 drop policy if exists "Users can insert cards for their deck." on card;
@@ -240,3 +238,21 @@ ADD COLUMN data_source jsonb;
 -- Add archived column to deck table
 ALTER TABLE deck 
 ADD COLUMN archived boolean NOT NULL DEFAULT false;
+
+-- Create a table for completed decks
+create table deck_completed (
+  id uuid primary key default gen_random_uuid(),
+  profile_id uuid references profiles(id) on delete cascade not null,
+  completed_at timestamptz
+);
+
+-- Set up Row Level Security (RLS) for deck_completed table
+alter table deck_completed enable row level security;
+
+-- Add RLS policies for deck_completed table
+create policy "Completed decks are viewable by self." on deck_completed
+  for select using (auth.uid() = profile_id);
+
+create policy "Users can insert their own completed deck." on deck_completed
+  for insert with check (auth.uid() = profile_id);
+

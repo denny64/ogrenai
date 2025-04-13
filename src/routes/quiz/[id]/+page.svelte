@@ -2,6 +2,32 @@
   import { onMount } from "svelte"
   import { goto } from "$app/navigation"
   import QACard from "$lib/Card/QACard.svelte"
+  import { language } from "$lib/stores/language"
+
+  let currentLang = $state<"en" | "tr">("tr")
+
+  $effect(() => {
+    language.subscribe((value) => {
+      currentLang = value
+    })
+  })
+
+  const translations = {
+    en: {
+      pressKey: "Press any key to see answer options",
+      correct: "Correct!",
+    },
+    tr: {
+      pressKey: "Cevap seçeneklerini görmek için herhangi bir tuşa bas",
+      correct: "Doğru!",
+    },
+  }
+
+  let t = $state(translations.tr)
+
+  $effect(() => {
+    t = currentLang === "en" ? translations.en : translations.tr
+  })
 
   let { data } = $props()
   let { singleDeckData, cardList } = data
@@ -310,7 +336,7 @@
     </div>
 
     {#if !shownCards.has(currentCardIndex)}
-      <div class="prompt-text">Press any key to see answer options</div>
+      <div class="prompt-text">{t.pressKey}</div>
     {/if}
 
     {#if shownCards.has(currentCardIndex) && !showToast}
@@ -375,7 +401,7 @@
       </div> -->
       <div class="toast toast-center toast-middle">
         <div class="alert alert-success">
-          <span>Correct! </span>
+          <span>{t.correct} </span>
         </div>
       </div>
     {/if}

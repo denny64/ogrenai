@@ -1,4 +1,5 @@
 import { json } from "@sveltejs/kit"
+import { credits } from "$lib/stores/credits"
 
 export async function GET({ request, locals, url }) {
   const { searchParams } = new URL(url)
@@ -137,65 +138,72 @@ export async function POST({
         { status: 500 },
       )
     }
+  } else if (type === "completeDeck") {
+    try {
+      const { data: completeDeckData, error: completeDeckDataError } =
+        await supabase
+          .from("deck_completed")
+          .insert({
+            profile_id: session.user.id,
+            completed_at: new Date(),
+          })
+          .select()
+          .single()
+
+      if (completeDeckDataError) {
+        console.error("SUPABASE COMPLETE DECK ERROR:", completeDeckDataError)
+        throw completeDeckDataError
+      }
+
+      console.log("COMPLETE DECK DATA", completeDeckData)
+
+      // Fetch completed decks
+      const { data: completedDecks, error: completedDecksError } =
+        await supabase
+          .from("deck_completed")
+          .select("*")
+          .eq("profile_id", session.user.id)
+
+      if (completedDecksError) {
+        console.error("error fetching completed decks", completedDecksError)
+        throw completedDecksError
+      }
+
+      console.log("query completed decks after inserting", completedDecks)
+      console.log("data.subscriptionStats", data.subscriptionStats)
+
+      // Calculate credits to deduct based on completed decks within subscription period
+      let creditsToDeduct = 0
+      const startDate = new Date(data.subscriptionStats.startDate)
+      const endDate = new Date(data.subscriptionStats.endDate)
+
+      console.log("startDate", startDate)
+      console.log("endDate", endDate)
+
+      completedDecks.forEach((deck: { completed_at: string }) => {
+        const completedAt = new Date(deck.completed_at)
+        if (completedAt >= startDate && completedAt <= endDate) {
+          creditsToDeduct++
+        }
+      })
+
+      // Update credits in the store
+      // credits.update((currentCredits) => currentCredits - creditsToDeduct)
+
+      return json({
+        success: true,
+        data: completeDeckData,
+        creditsToDeduct,
+      })
+    } catch (error) {
+      console.error("Error completing DECK:", error)
+      return json(
+        {
+          success: false,
+          error: "Failed to complete deck",
+        },
+        { status: 500 },
+      )
+    }
   }
-
-  // if (type === "createBooking") {
-  //   try {
-
-  //     const { data: sbCustomer, error: sbCustomerError } = await locals.supabase
-  //       .from('customers')
-  //       .upsert(
-  //         { first_name: data.firstName, last_name: data.lastName, email: data.email, mobile_number: data.mobileNumber, landline_number: data.landlineNumber, restaurant_id: data.restaurantId, created_at: new Date() },
-  //         { onConflict: 'email' }
-  //       )
-  //       .select()
-  //       .single();
-
-  //     if (sbCustomerError) {
-  //       console.error("SUPERBASE CREATE CUSTOMER ERROR", sbCustomerError);
-  //     }
-
-  //     let customerId = sbCustomer.id;
-
-  //     const { data: newBooking, error: newBookingError } = await locals.supabase
-  //       .from('bookings')
-  //       .insert([
-  //         { customer_id: customerId, restaurant_id: data.restaurantId, table_id: data.tableId, booking_date: data.date, booking_time: data.time, out_by: data.outBy, taken_by: data.takenBy, comments: data.comments, email_confirmation_sent: data.sendEmail, status: 'confirmed', created_at: new Date() },
-  //       ])
-  //       .select()
-  //       .single();
-
-  //     if (newBookingError) {
-  //       console.error("SUPERBASE CREATE BOOKING ERROR", newBookingError);
-  //     }
-
-  //     if(newBooking.email_confirmation_sent) {
-  //       const emailData = {
-  //         name: 'OceanGum Bookings',
-  //         emails: [sbCustomer.email],
-  //         subject: 'Booking confirmation for <restaurant name>',
-  //         text: "YOU'VE BEEN BOOKED MOTHERFUCKER",
-  //         // emailHtml: installerEmailHtml
-  //       };
-
-  //       // Send email
-  //       await fetch('/api/resend', {
-  //         method: 'POST',
-  //         headers: { 'Content-Type': 'application/json' },
-  //         body: JSON.stringify(emailData)
-  //       });
-  //     }
-
-  //     return json({
-  //       success: true,
-  //       data: data
-  //     });
-  //   } catch (error) {
-  //     console.error("Error creating tables:", error);
-  //     return json({
-  //       success: false,
-  //       error: "Failed to customer and make booking"
-  //     }, { status: 500 });
-  //   }
-  // }
 }
