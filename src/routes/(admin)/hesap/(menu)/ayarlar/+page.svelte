@@ -9,9 +9,9 @@
   // adminSection.set("ayarlar")
 
   let { data } = $props()
-  let { profile, user, subscriptionStats } = data
+  let { session, profile, user, subscriptionStats } = data
 
-  console.log("sub stats", subscriptionStats)
+  console.log("settings sub page", data)
 
   // Language and translations
   let currentLang = $state<"en" | "tr">("tr")
@@ -59,6 +59,52 @@
   $effect(() => {
     t = currentLang === "en" ? translations.en : translations.tr
   })
+
+  let isYearly = $state(false)
+  const monthlyPrice = 8.99
+  const yearlyPrice = 5.99
+
+  const handleGetPremium = async (subType: string) => {
+    if (profile.stripe_customer_id) {
+      // EXISTING CUSTOMER STRIPE
+      console.log("existing customer, handle premium subscription")
+      const response = await fetch("/hesap/api/stripe", {
+        method: "POST",
+        body: JSON.stringify({
+          type: "existingCustomer",
+          data: {
+            userId: profile.id,
+            stripeCustomerId: profile.stripe_customer_id,
+            subType: subType,
+            amount: isYearly ? yearlyPrice * 12 : monthlyPrice,
+          },
+        }),
+      }).then((res) => res.json())
+      console.log("STRIPE BILLING PORTAL DATA? ==", response)
+      if (response.success) {
+        window.open(response.stripeUrl, "_blank")
+      }
+    } else {
+      // NEW CUSTOMER STRIPE
+      console.log("new customer, handle premium subscription")
+      const response = await fetch("/hesap/api/stripe", {
+        method: "POST",
+        body: JSON.stringify({
+          type: "newCustomer",
+          data: {
+            userId: session?.user.id,
+            stripeCustomerId: profile.stripe_customer_id,
+            subType: subType,
+            amount: isYearly ? yearlyPrice * 12 : monthlyPrice,
+          },
+        }),
+      }).then((res) => res.json())
+      console.log("STRIPE NEW CUSTOMER RESPONSE ==", response)
+      if (response.success === true) {
+        window.open(response.stripeUrl, "_blank")
+      }
+    }
+  }
 </script>
 
 <svelte:head>
@@ -130,12 +176,30 @@
           >{subscriptionStats.plan}</span
         >
       </div>
+      <div class="text-lg mb-3">
+        {#if subscriptionStats.plan === "Free"}
+          <a href="/hesap/faturalandırma">
+            <button class="btn btn-outline btn-sm mt-3 min-w-[145px]">
+              Manage
+            </button>
+          </a>
+        {:else}
+          <!-- <a href="/hesap/ayarlar"> -->
+          <button
+            class="btn btn-outline btn-sm mt-3 min-w-[145px]"
+            onclick={() =>
+              handleGetPremium(
+                subscriptionStats.plan === "Premium Yearly"
+                  ? "yearly"
+                  : "monthly",
+              )}
+          >
+            Manage
+          </button>
+          <!-- </a> -->
+        {/if}
+      </div>
     </div>
-    <!-- <a href="/hesap/ayarlar">
-      <button class="btn btn-outline btn-sm mt-3 min-w-[145px]">
-        Manage
-      </button>
-    </a> -->
   </div>
 </div>
 

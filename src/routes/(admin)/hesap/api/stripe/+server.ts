@@ -40,7 +40,7 @@ export const POST: RequestHandler = async ({
   }
 
   const successUrl = `${request.headers.get("origin")}/hesap/kartlarim`
-  const cancelUrl = `${request.headers.get("origin")}/pricing`
+  const cancelUrl = `${request.headers.get("origin")}/${encodeURIComponent("fiyatlandırma")}`
   const returnUrl = `${request.headers.get("origin")}/hesap/ayarlar`
 
   let productId = ""
@@ -74,7 +74,7 @@ export const POST: RequestHandler = async ({
     const checkoutData: Stripe.Checkout.SessionCreateParams = {
       mode: "subscription" as const,
       payment_method_types: ["card"],
-      allow_promotion_codes: true,
+      // allow_promotion_codes: true,
       line_items: [
         {
           price: priceId,
@@ -87,6 +87,17 @@ export const POST: RequestHandler = async ({
         userId: userId || null,
         stripeCustomerId: stripeCustomerId || null,
       },
+    }
+
+    // Only add discount for yearly subscription
+    if (priceId === "price_1RDM8MGuj2EuCfeBbCzNtw4W") {
+      checkoutData.discounts = [
+        {
+          coupon: "z5cyboWU",
+        },
+      ]
+    } else {
+      checkoutData.allow_promotion_codes = true
     }
 
     const checkoutSession =
@@ -187,7 +198,7 @@ export const POST: RequestHandler = async ({
         const checkoutData: Stripe.Checkout.SessionCreateParams = {
           mode: "subscription" as const,
           payment_method_types: ["card"],
-          allow_promotion_codes: true,
+          // allow_promotion_codes: true,
           line_items: [
             {
               price: priceId,
@@ -201,6 +212,17 @@ export const POST: RequestHandler = async ({
             userId: data.userId || null,
             stripeCustomerId: data.stripeCustomerId || null,
           },
+        }
+
+        // Only add discount for yearly subscription
+        if (priceId === "price_1RDM8MGuj2EuCfeBbCzNtw4W") {
+          checkoutData.discounts = [
+            {
+              coupon: "z5cyboWU",
+            },
+          ]
+        } else {
+          checkoutData.allow_promotion_codes = true
         }
 
         const checkoutSession =

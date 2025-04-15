@@ -28,6 +28,7 @@
   const translations = {
     en: {
       account: "Account",
+      pricing: "Pricing",
       learnWithAI: "Learn with AI",
       aiDescription:
         "AI that turns what you're learning into flashcards so you don't have to",
@@ -35,6 +36,7 @@
     },
     tr: {
       account: "Hesap",
+      pricing: "Fiyatlandırma",
       learnWithAI: "Yapay Zeka ile Öğren",
       aiDescription:
         "Yapay zeka öğrendiklerinizi flashcard'lara dönüştürür, siz uğraşmayın",
@@ -82,7 +84,7 @@
         >
       </li> -->
       <!-- <li class="md:mx-2"><a href="/blog">Blog</a></li> -->
-      <li class="md:mx-2"><a href="/pricing">Pricing</a></li>
+      <li class="md:mx-2"><a href="/fiyatlandırma">{t.pricing}</a></li>
       <li class="md:mx-2"><a href="/hesap/kartlarim">{t.account}</a></li>
       <!-- <li class="md:mx-0">
         <a href="/search" aria-label="Search">
@@ -124,7 +126,7 @@
         class="menu menu-lg dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52 font-bold"
       >
         <!-- <li><a href="/blog">Blog</a></li> -->
-        <!-- <li><a href="/pricing">Pricing</a></li> -->
+        <!-- <li><a href="/fiyatlandırma">Pricing</a></li> -->
         <li><a href="/hesap/kartlarim">{t.account}</a></li>
         <!-- <li><a href="/search">Search</a></li> -->
         <!-- <li>
@@ -154,7 +156,7 @@
     <nav>
       <!-- <span class="footer-title opacity-80">Explore</span>
       <a class="link link-hover mb-1" href="/">Overview</a>
-      <a class="link link-hover my-1" href="/pricing">Pricing</a>
+      <a class="link link-hover my-1" href="/fiyatlandırma">Pricing</a>
       <a class="link link-hover my-1" href="/blog">Blog</a>
       <a class="link link-hover my-1" href="/contact_us">Contact Us</a>
       <a

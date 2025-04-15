@@ -17,8 +17,18 @@
 
   const translations = {
     en: {
+      pricing: "Pricing",
+      freeSignUp: "Free plan on sign up",
+      welcomeOffer: "Welcome Offer!",
       yearly: "Yearly",
-      monthly: "Monthly!",
+      monthly: "Monthly",
+      limitedFeatures: "Limited Features",
+      neverBilled: "Never billed",
+      freeSetsPerMonth: "3 free flashcard sets per month",
+      freeLimitedAccess: "Limited access to all future features",
+      freeLimitedStorage: "Limited storage",
+      upgradeAnyTime: "Upgrade any time",
+      simplePricing: "Simple pricing. All features",
       billedYearly: "Billed yearly",
       billedMonthly: "Billed monthly",
       setsPerMonth: "100 flashcard sets per month",
@@ -28,10 +38,21 @@
       lockedIn: "This price is locked in for life",
       lockedInBracket: "(even with new features)",
       mostPopular: "Most Popular - save up to 50%",
+      getStarted: "Get Started",
     },
     tr: {
+      pricing: "Fiyatlandırma",
+      freeSignUp: "Kayıt olunca ücretsiz plan",
+      welcomeOffer: "Hoş geldin hediyesi!",
       yearly: "Yıllık",
       monthly: "aylık",
+      limitedFeatures: "Sınırlı özellikler",
+      neverBilled: "Ücretlendirme yok",
+      freeSetsPerMonth: "Aylık 3 ücretsiz bilgi kartı seti",
+      freeLimitedAccess: "Gelecekteki özelliklere sınırlı erişim",
+      freeLimitedStorage: "Sınırlı depolama alanı",
+      upgradeAnyTime: "İstediğin zaman geçiş yap",
+      simplePricing: "Net fiyatlandırma. Tüm özellikler dahil",
       billedYearly: "Yıllık faturalandırılır",
       billedMonthly: "Her ay faturalandırılır",
       setsPerMonth: "Aylık 100 adet flashcard seti",
@@ -41,6 +62,7 @@
       lockedIn: "Bu fiyat ömür boyu sabit kalır",
       lockedInBracket: "(yeni özellikler eklense bile)",
       mostPopular: "En popüler – %50’den fazla tasarruf",
+      getStarted: "Başla",
     },
   }
 
@@ -128,14 +150,14 @@
 </script>
 
 <svelte:head>
-  <title>Pricing</title>
-  <meta name="description" content="Pricing - {WebsiteName}" />
+  <title>{t.pricing}</title>
+  <meta name="description" content="{t.pricing} - {WebsiteName}" />
 </svelte:head>
 
 <div class="min-h-[70vh] pb-8 pt-[5vh] px-4">
-  <h1 class="text-3xl font-bold text-center">Pricing</h1>
+  <h1 class="text-3xl font-bold text-center">{t.pricing}</h1>
   <h2 class="text-xl text-center text-slate-500 mt-1 pb-3">
-    Free plan on sign up
+    {t.freeSignUp}
   </h2>
 
   <div class="flex items-center justify-center gap-3 mt-8">
@@ -147,7 +169,7 @@
       ></div>
     </label>
     <span class="text-lg">{t.yearly}</span>
-    <span class="badge badge-success">Welcome Offer!</span>
+    <span class="badge badge-success">{t.welcomeOffer}</span>
   </div>
 
   <div class="w-full my-8">
@@ -187,18 +209,18 @@
       <div class="card w-96 bg-base-100 border border-base-300">
         <div class="card-body">
           <h2 class="text-3xl font-bold">Free</h2>
-          <p class="text-base-content/70">Limited Features</p>
+          <p class="text-base-content/70">{t.limitedFeatures}</p>
 
           <!-- Free Plan Price -->
           <div class="my-4">
             <span class="text-5xl font-bold">$0</span>
-            <span class="text-base-content/70">/month</span>
+            <span class="text-base-content/70">/{t.monthly}</span>
           </div>
-          <p class="text-base-content/70">Never billed.</p>
+          <p class="text-base-content/70">{t.neverBilled}</p>
 
           <button
             class="btn btn-outline btn-primary mt-4"
-            onclick={handleGetFree}>Get Started</button
+            onclick={handleGetFree}>{t.getStarted}</button
           >
 
           <div class="divider mt-4"></div>
@@ -219,7 +241,7 @@
                   d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
                 />
               </svg>
-              <span>3 free flashcard sets per month</span>
+              <span>{t.freeSetsPerMonth}</span>
             </div>
             <div class="flex items-center gap-2">
               <svg
@@ -236,7 +258,7 @@
                   d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
                 />
               </svg>
-              <span>Limited access to all future features</span>
+              <span>{t.freeLimitedAccess}</span>
             </div>
             <div class="flex items-center gap-2">
               <svg
@@ -253,7 +275,7 @@
                   d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
                 />
               </svg>
-              <span>Limited storage</span>
+              <span>{t.freeLimitedStorage}</span>
             </div>
             <div class="flex items-center gap-2">
               <svg
@@ -270,7 +292,7 @@
                   d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
                 />
               </svg>
-              <span>Upgrade any time</span>
+              <span>{t.upgradeAnyTime}</span>
             </div>
             <!-- <div class="flex items-center gap-2">
               <svg
@@ -319,9 +341,7 @@
         </div>
         <div class="card-body">
           <h2 class="text-3xl font-bold">Premium</h2>
-          <p class="text-base-content/70">
-            Simple pricing. All Answers Features
-          </p>
+          <p class="text-base-content/70">{t.simplePricing}</p>
 
           <!-- Premium Plan Price -->
           <div class="my-4">
@@ -345,7 +365,7 @@
           <button
             class="btn btn-primary mt-4"
             onclick={() => handleGetPremium(isYearly ? "yearly" : "monthly")}
-            >Get Premium</button
+            >{t.getStarted}</button
           >
           <!-- <button class="btn btn-outline btn-primary mt-4">Get Premium</button> -->
 
