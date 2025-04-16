@@ -19,6 +19,9 @@
   const translations = {
     en: {
       pricing: "Pricing",
+      free: "Free",
+      current: "Current",
+      manage: "Manage",
       freeSignUp: "Free plan on sign up",
       welcomeOffer: "Welcome Offer!",
       yearly: "Yearly",
@@ -39,9 +42,14 @@
       lockedIn: "This price is locked in for life",
       lockedInBracket: "(even with new features)",
       mostPopular: "Most Popular - save up to 50%",
+      getYearly: "Get Yearly",
+      getMonthly: "Get Monthly",
     },
     tr: {
       pricing: "Fiyatlandırma",
+      free: "Ücretsiz",
+      current: "Mevcut",
+      manage: "Yönet",
       freeSignUp: "Kayıt olunca ücretsiz plan",
       welcomeOffer: "Hoş geldin hediyesi!",
       yearly: "Yıllık",
@@ -62,6 +70,8 @@
       lockedIn: "Bu fiyat ömür boyu sabit kalır",
       lockedInBracket: "(yeni özellikler eklense bile)",
       mostPopular: "En popüler – %50’den fazla tasarruf",
+      getYearly: "Yıllık al",
+      getMonthly: "Aylık al",
     },
   }
 
@@ -222,7 +232,7 @@
       <!-- Monthly Plan -->
       <div class="card w-96 bg-base-100 border border-base-300">
         <div class="card-body">
-          <h2 class="text-3xl font-bold">Free</h2>
+          <h2 class="text-3xl font-bold">{t.free}</h2>
           <p class="text-base-content/70">{t.limitedFeatures}</p>
 
           <!-- Free Plan Price -->
@@ -236,7 +246,9 @@
             class="btn btn-outline btn-primary mt-4"
             onclick={handleGetFree}
             disabled={subscriptionStats.plan === "Free"}
-            >{subscriptionStats.plan === "Free" ? "Current" : "Manage"}</button
+            >{subscriptionStats.plan === "Free"
+              ? `${t.current}`
+              : `${t.manage}`}</button
           >
 
           <div class="divider mt-4"></div>
@@ -391,8 +403,8 @@
               onclick={() => handleGetPremium("yearly")}
               disabled={subscriptionStats.plan === "Premium Yearly"}
               >{subscriptionStats.plan === "Premium Yearly"
-                ? "Current"
-                : "Get Yearly"}</button
+                ? `${t.current}`
+                : `${t.getYearly}`}</button
             >
           {:else}
             <button
@@ -400,8 +412,8 @@
               onclick={() => handleGetPremium("monthly")}
               disabled={subscriptionStats.plan === "Premium Monthly"}
               >{subscriptionStats.plan === "Premium Monthly"
-                ? "Current"
-                : "Get Monthly"}</button
+                ? `${t.current}`
+                : `${t.getMonthly}`}</button
             >
           {/if}
           <!-- <button class="btn btn-outline btn-primary mt-4">Get Premium</button> -->

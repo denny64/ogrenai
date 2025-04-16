@@ -18,6 +18,7 @@
   const translations = {
     en: {
       pricing: "Pricing",
+      free: "Free",
       freeSignUp: "Free plan on sign up",
       welcomeOffer: "Welcome Offer!",
       yearly: "Yearly",
@@ -42,6 +43,7 @@
     },
     tr: {
       pricing: "Fiyatlandırma",
+      free: "Ücretsiz",
       freeSignUp: "Kayıt olunca ücretsiz plan",
       welcomeOffer: "Hoş geldin hediyesi!",
       yearly: "Yıllık",
@@ -208,7 +210,7 @@
       <!-- Monthly Plan -->
       <div class="card w-96 bg-base-100 border border-base-300">
         <div class="card-body">
-          <h2 class="text-3xl font-bold">Free</h2>
+          <h2 class="text-3xl font-bold">{t.free}</h2>
           <p class="text-base-content/70">{t.limitedFeatures}</p>
 
           <!-- Free Plan Price -->

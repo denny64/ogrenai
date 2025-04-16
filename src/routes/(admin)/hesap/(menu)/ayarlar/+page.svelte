@@ -34,9 +34,11 @@
       password: "Password",
       changePassword: "Change Password",
       subscription: "Email Subscription",
+      sub: "Subscription",
       changeSubscription: "Change Subscription",
       dangerZone: "Danger Zone",
       deleteAccount: "Delete Account",
+      manage: "Manage",
     },
     tr: {
       settings: "Ayarlar",
@@ -48,9 +50,11 @@
       password: "Şifre",
       changePassword: "Şifreyi Değiştir",
       subscription: "Abonelik",
+      sub: "Abonelik",
       changeSubscription: "Aboneliği Değiştir",
       dangerZone: "Tehlikeli Bölge",
       deleteAccount: "Hesabı Sil",
+      manage: "Yönet",
     },
   }
 
@@ -164,7 +168,7 @@
 
 <!-- MANAGE SUBSCRIPTION -->
 <div class="card p-6 pb-7 mt-8 max-w-xl flex flex-col md:flex-row shadow">
-  <div class="text-xl font-bold mb-3 w-48 md:pr-8 flex-none">Subscription</div>
+  <div class="text-xl font-bold mb-3 w-48 md:pr-8 flex-none">{t.sub}</div>
 
   <div class="w-full min-w-48">
     <div>
@@ -180,7 +184,7 @@
         {#if subscriptionStats.plan === "Free"}
           <a href="/hesap/faturalandırma">
             <button class="btn btn-outline btn-sm mt-3 min-w-[145px]">
-              Manage
+              {t.manage}
             </button>
           </a>
         {:else}
@@ -194,7 +198,7 @@
                   : "monthly",
               )}
           >
-            Manage
+            {t.manage}
           </button>
           <!-- </a> -->
         {/if}
