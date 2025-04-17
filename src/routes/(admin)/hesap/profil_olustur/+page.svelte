@@ -3,6 +3,41 @@
   import type { SubmitFunction } from "@sveltejs/kit"
   import "../../../../app.css"
 
+  import { language } from "$lib/stores/language"
+
+  let currentLang = $state<"en" | "tr">("tr")
+
+  $effect(() => {
+    language.subscribe((value) => {
+      currentLang = value
+    })
+  })
+
+  const translations = {
+    en: {
+      createProfile: "Create Profile",
+      yourName: "Your Name",
+      fullName: "Full Name",
+      yourAreLoggedInAs: "You are logged in as",
+      signOut: "Sign out",
+      nameRequired: "Name is required",
+    },
+    tr: {
+      createProfile: "Profili oluştur",
+      yourName: "Adınız",
+      fullName: "Tam adınız",
+      yourAreLoggedInAs: "Şu kullanıcıyla giriş yaptınız:",
+      signOut: "Çıkış Yap",
+      nameRequired: "Adınız gereklidir",
+    },
+  }
+
+  let t = $state(translations.tr)
+
+  $effect(() => {
+    t = currentLang === "en" ? translations.en : translations.tr
+  })
+
   interface User {
     email: string
   }
@@ -43,7 +78,7 @@
 </script>
 
 <svelte:head>
-  <title>Create Profile</title>
+  <title>{t.createProfile}</title>
 </svelte:head>
 
 <div
@@ -51,7 +86,7 @@
 >
   <div class="flex flex-col w-64 lg:w-80">
     <div>
-      <h1 class="text-2xl font-bold mb-6">Create Profile</h1>
+      <h1 class="text-2xl font-bold mb-6">{t.createProfile}</h1>
       <form
         class="form-widget"
         method="POST"
@@ -60,13 +95,13 @@
       >
         <div class="mt-4">
           <label for="fullName">
-            <span class="text-l text-center">Your Name</span>
+            <span class="text-l text-center">{t.yourName}</span>
           </label>
           <input
             id="fullName"
             name="fullName"
             type="text"
-            placeholder="Your full name"
+            placeholder={t.fullName}
             class="{fieldError(form, 'fullName')
               ? 'input-error'
               : ''} mt-1 input input-bordered w-full max-w-xs"
@@ -110,24 +145,28 @@
         </div> -->
 
         {#if form?.errorMessage}
-          <p class="text-red-700 text-sm font-bold text-center mt-3">
+          <!-- <p class="text-red-700 text-sm font-bold text-center mt-3">
             {form?.errorMessage}
+          </p> -->
+          <p class="text-red-700 text-sm font-bold text-center mt-3">
+            {t.nameRequired}
           </p>
         {/if}
         <div class="mt-4">
           <input
             type="submit"
             class="btn btn-primary mt-3 btn-wide"
-            value={loading ? "..." : "Create Profile"}
+            value={loading ? "..." : `${t.createProfile}`}
             disabled={loading}
           />
         </div>
       </form>
 
       <div class="text-sm text-slate-800 mt-14">
-        You are logged in as {user?.email}.
+        {t.yourAreLoggedInAs}
+        {user?.email}.
         <br />
-        <a class="underline" href="/hesap/sign_out"> Sign out </a>
+        <a class="underline" href="/hesap/sign_out">{t.signOut}</a>
       </div>
     </div>
   </div>

@@ -46,7 +46,7 @@ export const load = async ({ fetch, data, depends, url }) => {
 
   const { data: aal } = await supabase.auth.mfa.getAuthenticatorAssuranceLevel()
 
-  const createProfilePath = "/hesap/create_profile"
+  const createProfilePath = "/hesap/profil_olustur"
   const signOutPath = "/hesap/sign_out"
   if (
     profile &&

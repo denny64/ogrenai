@@ -39,6 +39,10 @@
       dangerZone: "Danger Zone",
       deleteAccount: "Delete Account",
       manage: "Manage",
+      free: "Free",
+      currentPlan: "Current Plan",
+      premiumMonthly: "Premium Monthly",
+      premiumYearly: "Premium Yearly",
     },
     tr: {
       settings: "Ayarlar",
@@ -55,6 +59,10 @@
       dangerZone: "Tehlikeli Bölge",
       deleteAccount: "Hesabı Sil",
       manage: "Yönet",
+      currentPlan: "Mevcut Plan",
+      free: "Ücretsiz",
+      premiumMonthly: "Aylık Premium ",
+      premiumYearly: "Yıllık Premium",
     },
   }
 
@@ -173,11 +181,17 @@
   <div class="w-full min-w-48">
     <div>
       <label for="fullName"
-        ><span class="text-sm text-gray-500">Current Plan</span></label
+        ><span class="text-sm text-gray-500">{t.currentPlan}</span></label
       >
       <div class="text-lg mb-3">
         <span class="badge badge-lg badge-primary"
-          >{subscriptionStats.plan}</span
+          >{#if subscriptionStats.plan === "Free"}
+            {t.free}
+          {:else if subscriptionStats.plan === "Premium Monthly"}
+            {t.premiumMonthly}
+          {:else if subscriptionStats.plan === "Premium Yearly"}
+            {t.premiumYearly}
+          {/if}</span
         >
       </div>
       <div class="text-lg mb-3">

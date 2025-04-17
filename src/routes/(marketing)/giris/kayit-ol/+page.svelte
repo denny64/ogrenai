@@ -21,6 +21,9 @@
       emailInputPlaceholder: "Your email address",
       passwordLabel: "Create a Password",
       passwordInputPlaceholder: "Your password",
+      checkEmailConfirm: "Check your email for a confirmation link",
+      passwordError: "Password should be at least 6 characters.",
+      loading: "Signing up...",
     },
     tr: {
       signIn: "Giriş Yap",
@@ -31,6 +34,9 @@
       emailInputPlaceholder: "E-posta adresin",
       passwordLabel: "Şifre Oluştur",
       passwordInputPlaceholder: "Şifren",
+      checkEmailConfirm: "Onay bağlantısı için e-postanı kontrol et",
+      passwordError: "Şifre en az 6 karakter olmalıdır.",
+      loading: "Kayıt oluyor...",
     },
   }
 
@@ -41,6 +47,54 @@
   })
 
   let { data } = $props()
+
+  $effect(() => {
+    const observer = new MutationObserver((mutations) => {
+      mutations.forEach((mutation) => {
+        if (mutation.type !== "childList" || mutation.addedNodes.length === 0)
+          return
+
+        for (const node of mutation.addedNodes) {
+          if (
+            node instanceof HTMLElement &&
+            (node.classList.contains("supabase-account-ui_ui-message") ||
+              node.classList.contains("supabase-auth-ui_ui-message"))
+          ) {
+            const originErrorMessage = node.innerHTML.trim()
+
+            console.log("originErrorMessage", originErrorMessage)
+
+            // let translatedErrorMessage = "<DEFAULT MESSAGE>"
+            // let translatedErrorMessage =
+            //   currentLang === "tr"
+            //     ? "Geçersiz giriş bilgileri"
+            //     : "Invalid login credentials"
+            let translatedErrorMessage = `${t.passwordError}`
+            switch (originErrorMessage) {
+              case "Anonymous sign-ins are disabled":
+                translatedErrorMessage = "ahkmadkh"
+                break
+              case "Password should be at least 6 characters.":
+                translatedErrorMessage = `${t.passwordError}`
+                break
+              case "Invalid login credentials":
+                translatedErrorMessage = ""
+                break
+            }
+
+            if (!document.querySelector("#auth-forgot-password")) {
+              node.innerHTML = translatedErrorMessage
+            }
+          }
+        }
+      })
+    })
+
+    observer.observe(document.body, {
+      childList: true,
+      subtree: true,
+    })
+  })
 </script>
 
 <svelte:head>
@@ -65,6 +119,8 @@
         password_label: t.passwordLabel,
         password_input_placeholder: t.passwordInputPlaceholder,
         button_label: t.signUp,
+        loading_button_label: t.loading,
+        confirmation_text: t.checkEmailConfirm,
       },
     },
   }}

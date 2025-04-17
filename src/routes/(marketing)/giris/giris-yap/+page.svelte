@@ -64,6 +64,49 @@
       }
     })
   })
+
+  // * Supabase Auth Error Message Translation
+  $effect(() => {
+    const observer = new MutationObserver((mutations) => {
+      mutations.forEach((mutation) => {
+        if (mutation.type !== "childList" || mutation.addedNodes.length === 0)
+          return
+
+        for (const node of mutation.addedNodes) {
+          if (
+            node instanceof HTMLElement &&
+            (node.classList.contains("supabase-account-ui_ui-message") ||
+              node.classList.contains("supabase-auth-ui_ui-message"))
+          ) {
+            const originErrorMessage = node.innerHTML.trim()
+
+            // let translatedErrorMessage = "<DEFAULT MESSAGE>"
+            let translatedErrorMessage =
+              currentLang === "tr"
+                ? "Geçersiz giriş bilgileri"
+                : "Invalid login credentials"
+            switch (originErrorMessage) {
+              case "Invalid login credentials":
+                translatedErrorMessage = "Geçersiz giriş bilgileri"
+                break
+              case "missing email or phone":
+                translatedErrorMessage = "E-posta veya telefon numarası eksik"
+                break
+            }
+
+            if (!document.querySelector("#auth-forgot-password")) {
+              node.innerHTML = translatedErrorMessage
+            }
+          }
+        }
+      })
+    })
+
+    observer.observe(document.body, {
+      childList: true,
+      subtree: true,
+    })
+  })
 </script>
 
 <svelte:head>
