@@ -48,7 +48,7 @@
       aiMakesFlashcards: "AI senin için ders notlarını kartlara çeviri",
       aiDescription:
         "Öğrendiğin konuları otomatik olarak flashcard’a dönüştüren AI",
-      aiButtonText: "Flashcard oluşturmak için AI kullan",
+      aiButtonText: "Yapay zekâyla hızlı ve kolay flashcard oluştur!",
       importTitle: "Her yerden içerik aktar",
       spacedTitle: "Aralıklı tekrar + Aktif hatırlama",
       spacedDescription: "Öğrenmek istediğin konuları kendine sorarak pekiştir",
