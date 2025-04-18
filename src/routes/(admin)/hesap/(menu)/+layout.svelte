@@ -71,7 +71,7 @@
       cards: "Kartlar",
       viewSource: "Kaynağı Görüntüle",
       account: "Hesap",
-      billing: "Faturalama",
+      billing: "Abonelikler",
       settings: "Ayarlar",
       language: "Dil",
       switchToTurkish: "Türkçe'ye Geç",
@@ -208,7 +208,7 @@
       </li> -->
       <!-- <li>
         <a
-          href="/hesap/faturalandırma"
+          href="/hesap/abonelikler"
           class={adminSection === "billing" ? "active" : ""}
           onclick={closeDrawer}
         >
@@ -228,7 +228,7 @@
       {#if data.subscriptionStats.plan === "Free"}
         <li>
           <a
-            href="/hesap/faturalandırma"
+            href="/hesap/abonelikler"
             class={adminSection === "billing" ? "active" : ""}
             onclick={closeDrawer}
           >

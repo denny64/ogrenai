@@ -196,7 +196,7 @@
       </div>
       <div class="text-lg mb-3">
         {#if subscriptionStats.plan === "Free"}
-          <a href="/hesap/faturalandırma">
+          <a href="/hesap/abonelikler">
             <button class="btn btn-outline btn-sm mt-3 min-w-[145px]">
               {t.manage}
             </button>

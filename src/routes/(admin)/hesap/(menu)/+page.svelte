@@ -31,7 +31,7 @@
       and functionality.
     </div>
     <div class="my-2">
-      The <a href="/hesap/faturalandırma" class="link">billing</a> and
+      The <a href="/hesap/abonelikler" class="link">billing</a> and
       <a href="/hesap/ayarlar" class="link">settings</a> pages are functional
       demos.
     </div>
